@@ -8,7 +8,11 @@ current_date = datetime.now()
 default_args = {
                 'owner': 'airflow',
                 'depends_on_past': False,
-                'start_date': datetime(current_date.year, current_date.month, current_date.date, current_date.hour, current_date.minute),
+                'start_date': datetime(int(current_date.year), \
+                                       int(current_date.month), \
+                                       int(current_date.date), \
+                                       int(current_date.hour), \
+                                       int(current_date.minute)),
                 'email': ['airflow@example.com'],
                 'email_on_failure': False,
                 'email_on_retry': False,
