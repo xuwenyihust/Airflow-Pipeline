@@ -10,7 +10,7 @@ default_args = {
                 'depends_on_past': False,
                 'start_date': datetime(int(current_date.year), \
                                        int(current_date.month), \
-                                       int(current_date.date), \
+                                       int(current_date.day), \
                                        int(current_date.hour), \
                                        int(current_date.minute)),
                 'email': ['airflow@example.com'],
