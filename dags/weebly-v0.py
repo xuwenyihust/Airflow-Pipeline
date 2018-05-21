@@ -1,7 +1,7 @@
 from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.operators.python_operator import PythonOperator
-from ..src.get_customer_summary import get_customer_summary
+from src.get_customer_summary import get_customer_summary
 
 current_date = datetime.now()
 
