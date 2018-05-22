@@ -12,22 +12,17 @@ default_args = {
                 'email_on_failure': False,
                 'email_on_retry': False,
                 'retries': 1,
-                'retry_delay': timedelta(minutes=5), 
+                'retry_delay': timedelta(minutes=5),
                 }
 
 
-dag = DAG('zhihu', schedule_interval=timedelta(hours=1), catchup=False, default_args=default_args)
+dag = DAG('zhihu-v0', schedule_interval=timedelta(hours=1), catchup=False, default_args=default_args)
 
 topic_ids = {"exercise": 19552706, "science": 19556664, "history": 19551077, "internet": 19550517}
 
 for topic_name, topic_id in topic_ids.items():
-    task = PythonOperator(task_id='collect_from_topic_'+topic_name, 
+    task = PythonOperator(task_id='collect_from_topic_'+topic_name,
                           python_callable=collect_from_topic,
                           op_args=[topic_id],
                           provide_context=False,
                           dag=dag)
-
-
-
-
-
