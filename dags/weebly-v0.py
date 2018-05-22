@@ -33,7 +33,7 @@ default_args = {
                 'retry_delay': timedelta(minutes=5),
                 }
 
-weebly_pipeline = DAG('weebly-v0', schedule_interval=timedelta(hours=1), catchup=False, default_args=default_args)
+weebly_pipeline = DAG('weebly-v0', schedule_interval="@once", catchup=False, default_args=default_args)
 
 def write(string):
     output_path = os.path.join(os.path.dirname(__file__), '../data/weebly/out/test.csv')
