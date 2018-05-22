@@ -35,12 +35,13 @@ default_args = {
 
 weebly_pipeline = DAG('weebly-v0', schedule_interval="@once", catchup=False, default_args=default_args)
 
-def write():
+def write(string):
     output_path = os.path.join(os.path.dirname(__file__), '../data/weebly/out/test.csv')
-    f_out.write("233333333")
+    f_out.write(string)
 
 task_write = PythonOperator(task_id='get_customer_summary',
                             python_callable=write,
+                            op_args=["23333"],
                             provide_context=False,
                             dag=weebly_pipeline)
 
