@@ -25,7 +25,7 @@ def get_customer_summary():
 
     f_in.close()
 
-    for country, count in customer_dict.items():
+    for country, count in geography_dict.items():
         f_out.write(str(country)+","+str(count)+"\n")
 
     f_out.close()
