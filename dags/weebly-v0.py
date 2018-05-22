@@ -22,7 +22,7 @@ default_args = {
                 'retry_delay': timedelta(minutes=5)
                 }
 
-weebly_pipeline = DAG('weebly-v0', schedule_interval="@once", catchup=False, default_args=default_args)
+weebly_pipeline = DAG('weebly-v0', schedule_interval="@daily", catchup=False, default_args=default_args)
 
 task_clean_stale_data = BashOperator(task_id='clean_stale_data',
                                      bash_command='rm -r data/weebly/out/',
