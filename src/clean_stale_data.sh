@@ -1,6 +1,6 @@
 #!/bin/bash
 #clean_stale_data.sh
-DIRECTORY=$(pwd)/../data/weebly/out
+DIRECTORY=$AIRFLOW_HOME/data/weebly/out
 if [ -d "$DIRECTORY" ]; then
   rmdir "$DIRECTORY"
 fi
