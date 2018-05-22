@@ -24,6 +24,10 @@ default_args = {
 
 weebly_pipeline = DAG('weebly-v0', schedule_interval="@daily", catchup=False, default_args=default_args)
 
+customer_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/customer_info.csv')
+invoice_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/invoice.csv')
+product_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/product_info.csv')
+
 script_path = os.path.join(os.path.dirname(__file__), '../src/clean_stale_data.sh')
 clean_stale_data_command = """
 . {{params.script_path}}
@@ -35,6 +39,7 @@ task_clean_stale_data = BashOperator(task_id='clean_stale_data',
 
 task_get_customer_geo_dist = PythonOperator(task_id='get_customer_geo_dist',
                                            python_callable=get_customer_geo_dist,
+                                           op_args=[customer_file_in],
                                            provide_context=False,
                                            dag=weebly_pipeline)
 
