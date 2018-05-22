@@ -21,15 +21,9 @@ default_args = {
                 'retry_delay': timedelta(minutes=5)
                 }
 
-dag = DAG('weebly-v0', schedule_interval="@once", catchup=False, default_args=default_args)
-
-task_get_date = BashOperator(task_id='get_date',
-                             bash_command='date',
-                             dag=dag)
+weebly_pipeline = DAG('weebly-v0', schedule_interval="@once", catchup=False, default_args=default_args)
 
 task_get_customer_summary = PythonOperator(task_id='get_customer_summary',
                                            python_callable=get_customer_summary,
                                            provide_context=False,
-                                           dag=dag)
-
-task_get_customer_summary.set_upstream(task_get_date)
+                                           dag=weebly_pipeline)
