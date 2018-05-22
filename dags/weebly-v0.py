@@ -24,8 +24,9 @@ default_args = {
 
 weebly_pipeline = DAG('weebly-v0', schedule_interval="@daily", catchup=False, default_args=default_args)
 
+stale_data_path = os.path.join(os.path.dirname(__file__), '../data/weebly/out/')
 task_clean_stale_data = BashOperator(task_id='clean_stale_data',
-                                     bash_command='rm -r data/weebly/out/',
+                                     bash_command='rm -r ' + stale_data_path,
                                      dag=weebly_pipeline)
 
 task_get_customer_summary = PythonOperator(task_id='get_customer_summary',
