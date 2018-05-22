@@ -2,7 +2,7 @@ from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from src.get_customer_geo_dist import get_customer_geo_dist
+from get_customer_geo_dist import get_customer_geo_dist
 import sys
 import os
 
