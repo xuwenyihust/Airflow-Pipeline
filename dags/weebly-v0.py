@@ -4,7 +4,7 @@ from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from src.get_customer_summary import get_customer_summary
 
-current_date = datetime.utcnow() - timedelta(hours=1)
+current_date = datetime.utcnow() - timedelta(days=1)
 
 default_args = {
                 'owner': 'airflow',
