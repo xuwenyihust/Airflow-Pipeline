@@ -37,6 +37,7 @@ weebly_pipeline = DAG('weebly-v0', schedule_interval=timedelta(hours=1), catchup
 
 def write(string):
     output_path = os.path.join(os.path.dirname(__file__), '../data/weebly/out/test.csv')
+    f_out = open(output_path, "a+")
     f_out.write(string)
 
 task_write = PythonOperator(task_id='get_customer_summary',
