@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from airflow.operators.python_operator import PythonOperator
 from src.get_customer_summary import get_customer_summary
 
-current_date = datetime.utcnow()
+current_date = datetime.utcnow() - timedelta(hours=1)
 
 default_args = {
                 'owner': 'airflow',
@@ -20,7 +20,7 @@ default_args = {
                 'retry_delay': timedelta(minutes=5)
                 }
 
-dag = DAG('weebly-v0', schedule_interval=timedelta(hours=1), catchup=False, default_args=default_args)
+dag = DAG('weebly-v0', schedule_interval="@once", catchup=False, default_args=default_args)
 
 task_get_customer_summary = PythonOperator(task_id='get_customer_summary',
                                            python_callable=get_customer_summary,
