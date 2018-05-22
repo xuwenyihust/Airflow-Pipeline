@@ -11,6 +11,6 @@ def get_customer_geo_dist(input_file, output_file):
     # Group by country and sum
     geo_dist_df = customer_df.groupby(['country']) \
                              .count() \
-                             .rename(columns={0:"country",1:"count"})
+                             .rename(columns={'customerid':"count"})
 
     geo_dist_df.to_csv(output_path)
