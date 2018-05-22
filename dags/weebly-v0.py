@@ -2,7 +2,7 @@ from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from src.get_customer_summary import get_customer_summary
+from src.get_customer_geo_dist import get_customer_geo_dist
 import os
 
 current_date = datetime.utcnow() - timedelta(days=5)
@@ -33,9 +33,9 @@ task_clean_stale_data = BashOperator(task_id='clean_stale_data',
                                      params={'script_path': script_path},
                                      dag=weebly_pipeline)
 
-task_get_customer_summary = PythonOperator(task_id='get_customer_summary',
-                                           python_callable=get_customer_summary,
+task_get_customer_geo_dist = PythonOperator(task_id='get_customer_geo_dist',
+                                           python_callable=get_customer_geo_dist,
                                            provide_context=False,
                                            dag=weebly_pipeline)
 
-task_get_customer_summary.set_upstream(task_clean_stale_data)
+task_get_customer_geo_dist.set_upstream(task_clean_stale_data)
