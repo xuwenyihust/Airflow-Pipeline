@@ -2,7 +2,7 @@ from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from src.get_customer_geo_dist import get_customer_geo_dist
+from get_customer_geo_dist import get_customer_geo_dist
 import os
 
 current_date = datetime.utcnow() - timedelta(days=5)
@@ -28,6 +28,8 @@ customer_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/cu
 invoice_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/invoice.csv')
 product_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/product_info.csv')
 
+customer_file_out = os.path.join(os.path.dirname(__file__), '../data/weebly/out/customer_geo_dist.csv')
+
 script_path = os.path.join(os.path.dirname(__file__), '../src/clean_stale_data.sh')
 clean_stale_data_command = """
 . {{params.script_path}}
@@ -39,7 +41,7 @@ task_clean_stale_data = BashOperator(task_id='clean_stale_data',
 
 task_get_customer_geo_dist = PythonOperator(task_id='get_customer_geo_dist',
                                            python_callable=get_customer_geo_dist,
-                                           op_args=[customer_file_in],
+                                           op_args=[customer_file_in, customer_file_out],
                                            provide_context=False,
                                            dag=weebly_pipeline)
 
