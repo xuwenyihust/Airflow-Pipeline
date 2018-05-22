@@ -24,12 +24,13 @@ default_args = {
 
 weebly_pipeline = DAG('weebly-v0', schedule_interval="@daily", catchup=False, default_args=default_args)
 
-#stale_data_path = os.path.join(os.path.dirname(__file__), '../data/weebly/out/*')
+script_path = os.path.join(os.path.dirname(__file__), '../src/clean_stale_data.sh')
 clean_stale_data_command = """
-. ../src/clean_stale_data.sh
+. {{params.script_path}}
 """
 task_clean_stale_data = BashOperator(task_id='clean_stale_data',
                                      bash_command=clean_stale_data_command,
+                                     params={'script_path': script_path},
                                      dag=weebly_pipeline)
 
 task_get_customer_summary = PythonOperator(task_id='get_customer_summary',
