@@ -9,7 +9,7 @@ def get_customer_geo_dist():
     customer_df = pd.read_csv(input_path)
 
     # Group by country and sum
-    geo_dist_df = customer_df.goupby(['country']) \
+    geo_dist_df = customer_df.groupby(['country']) \
                              .sum() \
                              .rename(columns={0:"country",1:"count"})
 
