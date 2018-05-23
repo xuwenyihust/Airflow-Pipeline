@@ -15,5 +15,10 @@ def test_customer_consum(tmpdir):
     get_customer_consum(invoice_file.strpath, product_file.strpath, output_file.strpath)
     lines = output_file.readlines()
 
-    assert lines[0] == "customerid,total_consum\n"
-    assert lines[1] == "13831,414.72\n"
+    try:
+        assert lines[0] == "customerid,total_money,total_times\n"
+        assert lines[1] == "13831,414.72,1\n"
+    except AssertionError as e:
+        for i in range(len(lines)):
+            print(lines[i])
+        raise Exception(e.args)

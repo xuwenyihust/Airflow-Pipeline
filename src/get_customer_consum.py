@@ -23,9 +23,16 @@ def get_customer_consum(invoice_file, product_file, customer_consum_file):
     # invoice_unitprice_df.to_csv(output_path, index=False)
 
     # Group by customerid and sum unitprice * quantity
-    consum_df = invoice_unitprice_df.groupby(['customerid'])[['customerid', 'total_price']] \
-                                    .sum() \
-                                    .rename(columns={'total_price':"total_consum"}) \
-                                    .sort_values('total_consum', ascending=False)
+    consum_amount_df = invoice_unitprice_df.groupby(['customerid']) \
+                                    .aggregate({'total_price': lambda x: sum(x)}) \
+                                    .rename(columns={'total_price':"total_money"}) \
+                                    .sort_values('total_money', ascending=False)
 
-    consum_df.to_csv(output_path)
+    consum_count_df = invoice_unitprice_df.groupby(['customerid']) \
+                                          .aggregate({'invoiceno': lambda x: x.nunique()}) \
+                                          .rename(columns={'invoiceno': "total_times"})
+
+    # consum_amount_df.to_csv(output_path, index=False)
+    # consum_count_df.to_csv(output_path, index=False)
+    customer_consum_df = pd.merge(consum_amount_df, consum_count_df, left_index=True, right_index=True, how='outer')
+    customer_consum_df.to_csv(output_path)
