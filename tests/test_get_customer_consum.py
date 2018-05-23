@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from get_customer_consum import get_customer_consum
+from src.get_customer_consum import get_customer_consum
 
 # tmpdir fixture: per test temporary directory
 def test_customer_consum(tmpdir):

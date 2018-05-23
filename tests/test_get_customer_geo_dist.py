@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from get_customer_geo_dist import get_customer_geo_dist
+from src.get_customer_geo_dist import get_customer_geo_dist
 
 # tmpdir fixture: per test temporary directory
 def test_customer_geo_dist(tmpdir):
