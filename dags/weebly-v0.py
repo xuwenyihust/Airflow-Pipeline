@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from src.get_customer_geo_dist import get_customer_geo_dist
+from src.get_customer_consum import get_customer_consum
 import sys
 import os
 
