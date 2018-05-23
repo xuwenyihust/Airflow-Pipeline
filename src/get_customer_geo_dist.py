@@ -8,9 +8,10 @@ def get_customer_geo_dist(input_file, output_file):
 
     customer_df = pd.read_csv(input_path)
 
-    # Group by country and sum
+    # Group by country and count
     geo_dist_df = customer_df.groupby(['country']) \
                              .count() \
-                             .rename(columns={'customerid':"count"})
+                             .rename(columns={'customerid':"count"}) \
+                             .sort_values('count', ascending=False)
 
     geo_dist_df.to_csv(output_path)
