@@ -6,7 +6,7 @@ from src.get_customer_geo_dist import get_customer_geo_dist
 import sys
 import os
 
-
+# Calculate the start date
 current_date = datetime.utcnow() - timedelta(days=5)
 
 default_args = {
@@ -26,16 +26,19 @@ default_args = {
 
 weebly_pipeline = DAG('weebly-v0', schedule_interval="@daily", catchup=False, default_args=default_args)
 
-customer_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/customer_info.csv')
-invoice_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/invoice.csv')
-product_file_in = os.path.join(os.path.dirname(__file__), '../data/weebly/in/product_info.csv')
-
-customer_file_out = os.path.join(os.path.dirname(__file__), '../data/weebly/out/customer_geo_dist.csv')
+# Define input files
+customer_file = os.path.join(os.path.dirname(__file__), '../data/weebly/in/customer_info.csv')
+invoice_file = os.path.join(os.path.dirname(__file__), '../data/weebly/in/invoice.csv')
+product_file = os.path.join(os.path.dirname(__file__), '../data/weebly/in/product_info.csv')
+# Define output files
+customer_geo_dist_file = os.path.join(os.path.dirname(__file__), '../data/weebly/out/customer_geo_dist.csv')
+customer_consum_file = os.path.join(os.path.dirname(__file__), '../data/weebly/out/customer_consum.csv')
 
 script_path = os.path.join(os.path.dirname(__file__), '../src/clean_stale_data.sh')
 clean_stale_data_command = """
 . {{params.script_path}}
 """
+
 task_clean_stale_data = BashOperator(task_id='clean_stale_data',
                                      bash_command=clean_stale_data_command,
                                      params={'script_path': script_path},
@@ -43,7 +46,13 @@ task_clean_stale_data = BashOperator(task_id='clean_stale_data',
 
 task_get_customer_geo_dist = PythonOperator(task_id='get_customer_geo_dist',
                                            python_callable=get_customer_geo_dist,
-                                           op_args=[customer_file_in, customer_file_out],
+                                           op_args=[customer_file, customer_geo_dist_file],
+                                           provide_context=False,
+                                           dag=weebly_pipeline)
+
+task_get_customer_consum = PythonOperator(task_id='get_customer_consum',
+                                           python_callable=get_customer_consum ,
+                                           op_args=[invoice_file, product_file, customer_consum_file],
                                            provide_context=False,
                                            dag=weebly_pipeline)
 
