@@ -58,3 +58,4 @@ task_get_customer_consum = PythonOperator(task_id='get_customer_consum',
                                            dag=weebly_pipeline)
 
 task_get_customer_geo_dist.set_upstream(task_clean_stale_data)
+task_get_customer_consum.set_upstream(task_clean_stale_data)
