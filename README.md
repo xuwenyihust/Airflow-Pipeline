@@ -5,7 +5,7 @@ Data pipeline built on Airflow.
 
 
 ## How to use
-#### Supervisor
+### Supervisor
 Install the supervisor-4.0.0.dev0
 `sudo pip install git+https://github.com/Supervisor/supervisor@master`
 
@@ -27,10 +27,10 @@ PID
 `cat /tmp/supervisord.pid`
 
 
-#### Ansible
+### Ansible
 
 
-#### Airflow
+### Airflow
 Access the dags inside ~/airflow/dags
 `export AIRFLOW_HOME=~/airflow`
 
@@ -55,7 +55,7 @@ Screen 28196.pts-4.instance-1
 Web UI
 http://35.232.122.87:8080/admin/
 
-#### Postgresql
+### Postgresql
 
 
 ## Tests
