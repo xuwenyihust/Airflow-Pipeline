@@ -5,6 +5,7 @@ from airflow.operators.python_operator import PythonOperator
 from src.get_customer_geo_dist import get_customer_geo_dist
 from src.get_customer_consum import get_customer_consum
 from src.get_product_sells import get_product_sells
+from src.get_daily_sells import get_daily_sells
 import sys
 import os
 
@@ -36,6 +37,7 @@ product_file = os.path.join(os.path.dirname(__file__), '../data/weebly/in/produc
 customer_geo_dist_file = os.path.join(os.path.dirname(__file__), '../data/weebly/out/customer_geo_dist.csv')
 customer_consum_file = os.path.join(os.path.dirname(__file__), '../data/weebly/out/customer_consum.csv')
 product_sells_file = os.path.join(os.path.dirname(__file__), '../data/weebly/out/product_sells.csv')
+daily_sells_file = os.path.join(os.path.dirname(__file__), '../data/weebly/out/daily_sells.csv')
 
 script_path = os.path.join(os.path.dirname(__file__), '../src/clean_stale_data.sh')
 clean_stale_data_command = """
@@ -54,17 +56,24 @@ task_get_customer_geo_dist = PythonOperator(task_id='get_customer_geo_dist',
                                            dag=weebly_pipeline)
 
 task_get_customer_consum = PythonOperator(task_id='get_customer_consum',
-                                           python_callable=get_customer_consum ,
-                                           op_args=[invoice_file, product_file, customer_consum_file],
-                                           provide_context=False,
-                                           dag=weebly_pipeline)
+                                          python_callable=get_customer_consum ,
+                                          op_args=[invoice_file, product_file, customer_consum_file],
+                                          provide_context=False,
+                                          dag=weebly_pipeline)
 
 task_get_product_sells = PythonOperator(task_id='get_product_sells',
-                                           python_callable=get_product_sells ,
-                                           op_args=[invoice_file, product_file, product_sells_file],
-                                           provide_context=False,
-                                           dag=weebly_pipeline)
+                                        python_callable=get_product_sells ,
+                                        op_args=[invoice_file, product_file, product_sells_file],
+                                        provide_context=False,
+                                        dag=weebly_pipeline)
+
+task_get_daily_sells = PythonOperator(task_id='get_daily_sells',
+                                      python_callable=get_daily_sells ,
+                                      op_args=[invoice_file, product_file, daily_sells_file],
+                                      provide_context=False,
+                                      dag=weebly_pipeline)
 
 task_get_customer_geo_dist.set_upstream(task_clean_stale_data)
 task_get_customer_consum.set_upstream(task_clean_stale_data)
 task_get_product_sells.set_upstream(task_clean_stale_data)
+task_get_daily_sells.set_upstream(task_clean_stale_data)
